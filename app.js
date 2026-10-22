@@ -84,7 +84,6 @@ async function procesar(archivo) {
     const d = await llamar('extraer', {tipo: actual.tipo, datos: actual.datos});
     actual.advertencias = d.advertencias || [];
     llenarFormulario(d);
-    $('estado').textContent = `Lecturas hoy: ${d.uso_hoy} de ${d.limite_diario}`;
   } catch (e) {
     mensaje('No se pudo leer la boleta: ' + escapar(e.message), 'error');
   } finally {
@@ -154,17 +153,21 @@ async function cargarUltimas() {
 async function iniciar() {
   try {
     const e = await llamar('ping');
-    $('estado').textContent = e.ia
-      ? `Conectado · Lecturas hoy: ${e.uso_hoy} de ${e.limite_diario}`
-      : '⚠️ Backend sin clave de Anthropic configurada.';
+    if (!e.ia) avisoEstado('⚠️ Backend sin clave de Anthropic configurada.');
     for (const [id, url] of [['link-planilla', e.planilla_url], ['link-carpeta', e.carpeta_url]]) {
       $(id).href = url;
       $(id).hidden = false;
     }
     cargarUltimas();
   } catch (err) {
-    $('estado').textContent = '⚠️ No se pudo conectar con el backend: ' + err.message;
+    avisoEstado('⚠️ No se pudo conectar con el backend: ' + err.message);
   }
+}
+
+// La línea de estado solo aparece cuando hay un problema.
+function avisoEstado(texto) {
+  $('estado').textContent = texto;
+  $('estado').hidden = false;
 }
 
 $('camara').addEventListener('change', e => procesar(e.target.files[0]));

@@ -11,8 +11,8 @@
 <body>
   <header>
     <h1>🧾 Lector de Boletas</h1>
-    <p class="sub">Sube una boleta o factura (JPG, PNG o PDF) o tómale una foto. Claude lee los datos y tú los confirmas antes de guardarlos en Google Drive.</p>
-    <p id="estado" class="estado">Conectando…</p>
+    <p class="sub">Sube una boleta o factura (JPG, PNG o PDF) o tómale una foto.</p>
+    <p id="estado" class="estado" hidden></p>
   </header>
 
   <main>
@@ -30,7 +30,7 @@
       </div>
       <div id="zona" class="zona">o arrastra el archivo aquí</div>
       <div id="vista" class="vista" hidden></div>
-      <p id="leyendo" class="aviso" hidden><span class="giro"></span> Leyendo con Claude…</p>
+      <p id="leyendo" class="aviso" hidden><span class="giro" role="status" aria-label="Procesando"></span></p>
     </section>
 
     <section class="tarjeta" id="paso-revisar" hidden>
