@@ -161,6 +161,17 @@ function consumirCupo_() {
   }
 }
 
+/** Las llamadas que la API rechaza (sin saldo, clave inválida) no cuentan para el tope. */
+function devolverCupo_() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    PropertiesService.getScriptProperties().setProperty(claveUso_(), String(Math.max(0, usoHoy_() - 1)));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 const ESQUEMA = {
   type: 'object',
   properties: {
@@ -211,6 +222,7 @@ function extraer_(cuerpo) {
   const codigo = resp.getResponseCode();
   const r = JSON.parse(resp.getContentText());
   if (codigo !== 200) {
+    devolverCupo_();
     throw new Error('Error de la API de Anthropic (' + codigo + '): ' + (r.error && r.error.message || resp.getContentText()));
   }
   if (r.stop_reason === 'refusal') throw new Error('Claude no pudo procesar este documento.');
