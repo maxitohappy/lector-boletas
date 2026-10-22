@@ -93,6 +93,8 @@ function destino_() {
       hoja.getRange('G:I').setNumberFormat('$#,##0');
       props.setProperty('SHEET_ID', libro.getId());
     }
+    // Montos con punto de miles y fechas chilenas.
+    if (libro.getSpreadsheetLocale() !== 'es_CL') libro.setSpreadsheetLocale('es_CL');
     return {carpeta: carpeta, archivos: archivos, libro: libro, hoja: libro.getSheetByName(NOMBRE_PLANILLA)};
   } finally {
     lock.releaseLock();
@@ -284,7 +286,8 @@ function guardar_(cuerpo) {
     link = d.archivos.createFile(blob).getUrl();
   }
 
-  const fila = [new Date(), c.fecha, c.empresa, c.rut || '', c.tipo || '', c.folio || '',
+  // El apóstrofo deja el folio como texto para no perder ceros a la izquierda.
+  const fila = [new Date(), c.fecha, c.empresa, c.rut || '', c.tipo || '', c.folio ? "'" + c.folio : '',
     numero_(c.neto), numero_(c.iva), numero_(c.total), link, (cuerpo.advertencias || []).join(' | ')];
   d.hoja.appendRow(fila);
   return {planilla_url: d.libro.getUrl(), link_archivo: link};
