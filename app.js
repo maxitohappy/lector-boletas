@@ -79,7 +79,7 @@ async function procesar(archivo) {
     ? `<div class="pdf">📄 ${escapar(archivo.name)}</div>`
     : `<img alt="Boleta" src="data:image/jpeg;base64,${actual.datos}">`;
 
-  $('leyendo').hidden = false;
+  ocupado(true);
   try {
     const d = await llamar('extraer', {tipo: actual.tipo, datos: actual.datos});
     actual.advertencias = d.advertencias || [];
@@ -87,8 +87,15 @@ async function procesar(archivo) {
   } catch (e) {
     mensaje('No se pudo leer la boleta: ' + escapar(e.message), 'error');
   } finally {
-    $('leyendo').hidden = true;
+    ocupado(false);
   }
+}
+
+// Mientras se lee la boleta: vista previa atenuada y botones desactivados.
+function ocupado(si) {
+  $('vista').classList.toggle('procesando', si);
+  for (const id of ['camara', 'archivo']) $(id).disabled = si;
+  document.querySelectorAll('#paso-subir .boton').forEach(b => b.classList.toggle('desactivado', si));
 }
 
 function llenarFormulario(d) {

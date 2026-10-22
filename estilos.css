@@ -30,19 +30,20 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   margin: 0;
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--fondo);
   color: var(--texto);
 }
-header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+header, main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 header { padding-top: 24px; }
 h1 { margin: 0 0 4px; font-size: 1.6rem; }
 h2 { margin: 0 0 12px; font-size: 1.1rem; }
-.sub, .estado, footer { color: var(--suave); }
+.sub, .estado { color: var(--suave); }
 .estado { font-size: .9rem; }
-footer { font-size: .8rem; padding-bottom: 24px; }
+main { padding-bottom: 24px; }
 .tarjeta {
   background: var(--tarjeta);
   border: 1px solid var(--borde);
@@ -68,13 +69,8 @@ footer { font-size: .8rem; padding-bottom: 24px; }
 .vista { margin-top: 12px; text-align: center; }
 .vista img { max-width: 100%; max-height: 360px; border-radius: 8px; border: 1px solid var(--borde); }
 .vista .pdf { padding: 16px; border: 1px solid var(--borde); border-radius: 8px; }
-.aviso { display: flex; align-items: center; gap: 8px; color: var(--suave); }
-.giro {
-  width: 18px; height: 18px; border-radius: 50%;
-  border: 3px solid var(--borde); border-top-color: var(--acento);
-  animation: girar 1s linear infinite;
-}
-@keyframes girar { to { transform: rotate(360deg); } }
+.vista.procesando img, .vista.procesando .pdf { opacity: .4; transition: opacity .2s; }
+.boton.desactivado { opacity: .5; pointer-events: none; }
 form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 form label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--suave); }
 form input, form select {
