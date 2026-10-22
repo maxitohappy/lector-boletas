@@ -1,0 +1,106 @@
+:root {
+  --fondo: #f5f6f8;
+  --tarjeta: #ffffff;
+  --texto: #1d232b;
+  --suave: #5f6b7a;
+  --borde: #d9dee5;
+  --acento: #1f6feb;
+  --acento-texto: #ffffff;
+  --alerta-fondo: #fff6e0;
+  --alerta-texto: #7a5300;
+  --ok-fondo: #e6f6ec;
+  --ok-texto: #155d2e;
+  --error-fondo: #fdecec;
+  --error-texto: #8a1c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #12161c;
+    --tarjeta: #1b2129;
+    --texto: #e6e9ee;
+    --suave: #9aa5b3;
+    --borde: #2f3842;
+    --acento: #4b8ef5;
+    --alerta-fondo: #3a2f12;
+    --alerta-texto: #f3d38a;
+    --ok-fondo: #143222;
+    --ok-texto: #9fe0b5;
+    --error-fondo: #3d1a1a;
+    --error-texto: #f4b0b0;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+}
+header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+header { padding-top: 24px; }
+h1 { margin: 0 0 4px; font-size: 1.6rem; }
+h2 { margin: 0 0 12px; font-size: 1.1rem; }
+.sub, .estado, footer { color: var(--suave); }
+.estado { font-size: .9rem; }
+footer { font-size: .8rem; padding-bottom: 24px; }
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.botones { display: flex; gap: 8px; flex-wrap: wrap; }
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 8px 16px;
+  border: 1px solid var(--borde); border-radius: 8px;
+  background: var(--tarjeta); color: var(--texto);
+  font: inherit; cursor: pointer;
+}
+.boton.primario { background: var(--acento); border-color: var(--acento); color: var(--acento-texto); }
+.boton:disabled { opacity: .6; cursor: wait; }
+.zona {
+  margin-top: 12px; padding: 20px; text-align: center;
+  border: 2px dashed var(--borde); border-radius: 8px; color: var(--suave);
+}
+.zona.encima { border-color: var(--acento); color: var(--acento); }
+.vista { margin-top: 12px; text-align: center; }
+.vista img { max-width: 100%; max-height: 360px; border-radius: 8px; border: 1px solid var(--borde); }
+.vista .pdf { padding: 16px; border: 1px solid var(--borde); border-radius: 8px; }
+.aviso { display: flex; align-items: center; gap: 8px; color: var(--suave); }
+.giro {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 3px solid var(--borde); border-top-color: var(--acento);
+  animation: girar 1s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+form label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--suave); }
+form input, form select {
+  min-height: 40px; padding: 6px 10px; font: inherit; color: var(--texto);
+  background: var(--fondo); border: 1px solid var(--borde); border-radius: 6px;
+}
+form .destacado input { font-weight: 600; font-size: 1.1rem; }
+.acciones { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; }
+.advertencias { margin: 0 0 12px; padding: 0; list-style: none; }
+.advertencias li {
+  background: var(--alerta-fondo); color: var(--alerta-texto);
+  padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-size: .9rem;
+}
+.mensaje { padding: 10px 14px; border-radius: 8px; }
+.mensaje.ok { background: var(--ok-fondo); color: var(--ok-texto); }
+.mensaje.error { background: var(--error-fondo); color: var(--error-texto); }
+.mensaje a { color: inherit; }
+.enlaces { display: flex; gap: 16px; margin: 0 0 8px; font-size: .9rem; }
+a { color: var(--acento); }
+.tabla-envoltura { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+th { color: var(--suave); font-weight: 500; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.vacio { color: var(--suave); text-align: center; }
+@media (max-width: 520px) {
+  form { grid-template-columns: 1fr; }
+  .botones .boton { flex: 1; }
+}

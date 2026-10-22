@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lector de Boletas</title>
+  <meta name="description" content="Sube o fotografía una boleta; Claude extrae fecha, empresa, RUT, folio, neto, IVA y total, y los guarda en Google Drive.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧾</text></svg>">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header>
+    <h1>🧾 Lector de Boletas</h1>
+    <p class="sub">Sube una boleta o factura (JPG, PNG o PDF) o tómale una foto. Claude lee los datos y tú los confirmas antes de guardarlos en Google Drive.</p>
+    <p id="estado" class="estado">Conectando…</p>
+  </header>
+
+  <main>
+    <section class="tarjeta" id="paso-subir">
+      <h2>1. Boleta</h2>
+      <div class="botones">
+        <label class="boton primario">
+          📷 Tomar foto
+          <input id="camara" type="file" accept="image/*" capture="environment" hidden>
+        </label>
+        <label class="boton">
+          📁 Subir archivo
+          <input id="archivo" type="file" accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf" hidden>
+        </label>
+      </div>
+      <div id="zona" class="zona">o arrastra el archivo aquí</div>
+      <div id="vista" class="vista" hidden></div>
+      <p id="leyendo" class="aviso" hidden><span class="giro"></span> Leyendo con Claude…</p>
+    </section>
+
+    <section class="tarjeta" id="paso-revisar" hidden>
+      <h2>2. Revisa y corrige</h2>
+      <ul id="advertencias" class="advertencias"></ul>
+      <form id="formulario">
+        <label>Fecha <input name="fecha" type="date" required></label>
+        <label>Empresa <input name="empresa" required></label>
+        <label>RUT emisor <input name="rut" placeholder="76.123.456-7"></label>
+        <label>Tipo
+          <select name="tipo">
+            <option>Boleta</option><option>Factura</option><option>Boleta de honorarios</option><option>Otro</option>
+          </select>
+        </label>
+        <label>Folio <input name="folio"></label>
+        <label>Neto <input name="neto" inputmode="numeric"></label>
+        <label>IVA <input name="iva" inputmode="numeric"></label>
+        <label class="destacado">Monto total <input name="total" inputmode="numeric" required></label>
+        <div class="acciones">
+          <button type="button" id="cancelar" class="boton">Descartar</button>
+          <button type="submit" id="guardar" class="boton primario">💾 Guardar en Drive</button>
+        </div>
+      </form>
+    </section>
+
+    <p id="mensaje" class="mensaje" hidden></p>
+
+    <section class="tarjeta">
+      <h2>Últimas boletas guardadas</h2>
+      <p class="enlaces"><a id="link-planilla" target="_blank" rel="noopener" hidden>Abrir planilla</a>
+        <a id="link-carpeta" target="_blank" rel="noopener" hidden>Abrir carpeta en Drive</a></p>
+      <div class="tabla-envoltura">
+        <table>
+          <thead><tr><th>Fecha</th><th>Empresa</th><th>RUT</th><th>Folio</th><th class="num">Total</th><th></th></tr></thead>
+          <tbody id="ultimas"><tr><td colspan="6" class="vacio">Sin datos aún</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>Los datos se guardan en Google Drive. La lectura usa la API de Claude (Anthropic).</footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
